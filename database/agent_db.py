@@ -75,9 +75,26 @@ class AgentDB:
                 cursor.close()
                 conn.close()
 
-    
+    def update_agent(self,id,data):
+        conn = None
+        try:
+            conn = dbc.get_connection()
 
-
+            cursor = conn.cursor()
+            for key,value in data.items():
+                data_update = f"UPDATE agents SET {key} = %s WHERE id = %s"
+        
+                cursor.execute(data_update,(value,id))
+                conn.commit()
+        
+            return "change a agent"
+        except Exception as e:
+            raise e
+        
+        finally:
+            if conn:
+                cursor.close()
+                conn.close()
 
 if __name__=="__main__":
     adb = AgentDB()
@@ -87,4 +104,5 @@ if __name__=="__main__":
     # print(adb.create_agent(agent))
     print(adb.get_all_agents())
     # print(adb.get_agent_by_id(2))
+    print(adb.update_agent(1,agent))
 
