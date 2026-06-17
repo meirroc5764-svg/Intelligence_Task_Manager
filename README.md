@@ -74,7 +74,7 @@ with 11 methods
 -- mission importance, number, fields cannot be empty
 
 #### status: VARCHAR(50), DEFAULT:NEW
--- Mission status, no more than 50 characters. When created, the status is "new" \
+-- Mission status, no more than 50 characters. When created, the status is "NEW" \
 if the task has been assigned to an agent, the status changes to "ASSIGNED" \
 if it is in progress, the status is "IN_PROGRESS" \
 if the mission was successful, the status is "COMPLETED" \
