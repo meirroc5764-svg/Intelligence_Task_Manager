@@ -99,68 +99,115 @@ The risk level is determined by the number: \
 
 ### class DBConnection
 
-#### 1. method get_connection()
+#### 1. method: get_connection()
 -- Returns an active connection to MySQL
 
-#### 2. method create_database()
+#### 2. method: create_database()
 -- Creates Intelligence_db if it does not exist.
 
-#### 3. method create_tables()
+#### 3. method: create_tables()
 -- Creates both tables if they do not exist.
 
 -------------------
 ### class AgentDB
 
-#### 1. method create_agent(data)
+#### 1. method: create_agent(data)
 -- Creates a new agent and returns the agent object.
 
-#### 2. method get_all_agents()
+#### 2. method: get_all_agents()
 -- Returns a list of all agents
 
-#### 3. method get_agent_by_id(id)
+#### 3. method: get_agent_by_id(id)
 -- Returns one agent by ID, or None
 
-#### 4. method update_agent(id, data)
+#### 4. method: update_agent(id, data)
 -- UPDATE for the entire row (cannot change id)
 
-#### 5. method deactivate_agent(id)
+#### 5. method: deactivate_agent(id)
 -- Sets agent inactive status
 
-#### 6. method increment_completed(id)
+#### 6. method: increment_completed(id)
 -- Updates the number of tasks completed.
 
-#### 7. method increment_failed(id)
+#### 7. method: increment_failed(id)
 -- Updates the number of failed tasks
 
-#### 8. method get_agent_performance(id)
+#### 8. method: get_agent_performance(id)
 -- Returns a dictionary with these keys completed, failed, total, success_rate
 (success_rate - what percentage of tasks completed successfully out of the total)
 
-#### 9. method count_active_agents()
+#### 9. method: count_active_agents()
 -- Returns the number of active agents.
 
 ---------------------------
 ### class MissionDB
 
-#### 1. method create_mission(data)
+#### 1. method: create_mission(data)
 -- Creates a new task and returns the entire object.
 
-#### 2. method get_all_missions()
+#### 2. method: get_all_missions()
 -- Returns all tasks.
 
-#### 3. method get_mission_by_id(id)
+#### 3. method: get_mission_by_id(id)
 -- Returns one task by ID, or None.
 
-#### 4. method assign_mission(m_id, a_id)
+#### 4. method: assign_mission(m_id, a_id)
 -- Assigning a task to an agent
 
-#### 5. method update_mission_status(id, status)
+#### 5. method: update_mission_status(id, status)
 -- Used for any status change.
 
-#### 6. method get_open_missions_by_agent(id)
+#### 6. method: get_open_missions_by_agent(id)
 -- 	Returns agent ASSIGNED/IN_PROGRESS tasks.
 
-#### 7. method count_all_missions()
+#### 7. method: count_all_missions()
 -- Total tasks.
 
+#### 8. method: count_by_status(status)
+-- Counting by a certain status
 
+#### 9. method: count_open_missions()
+-- Open task counter
+
+#### 10. method: count_critical_missions()
+-- CRITICAL task counter.
+
+#### 11. method: get_top_agent()
+-- The agent with the highest completed_missions.
+
+----------------------------------------
+## System rules — the 10 rules relevant to the data layer
+### 1
+rank must be Junior / Senior / Commander — any other value throws an error. 
+### 2
+difficulty and importance must be between 1 and 10 — otherwise an error. 
+### 3
+risk_level is calculated automatically when creating a task — the user does not submit it. 
+### 4
+An agent with is_active=False cannot accept tasks. 
+### 5
+An agent cannot have more than 3 open tasks (ASSIGNED / IN_PROGRESS) at the same time. 
+### 6 
+If risk_level=CRITICAL — only an agent with the Commander rank can accept the task. 
+### 7 
+Only a task with the status NEW can be assigned. After assignment: status=ASSIGNED. 
+### 8 
+Only a task with the status ASSIGNED can be started. After: status=IN_PROGRESS. 
+### 9 
+Only a task with the status IN_PROGRESS can be finished and changed to failed or completed. 
+### 10 
+Only a task with the status NEW or ASSIGNED can be canceled — otherwise an error. 
+
+-----------------------------------
+## Running instructions
+
+open cmd and enter:
+
+docker run -d --name intelligence-mysql -e MYSQL_ROOT_PASSWORD=1234 \
+-e MYSQL_DATABASE=Intelligence_db -p 3306:3306 mysql:8.0
+
+after open git 
+https://github.com/meirroc5764-svg/Intelligence_Task_Manager
+
+and take a kod \
+open a vs kod and run a main 
