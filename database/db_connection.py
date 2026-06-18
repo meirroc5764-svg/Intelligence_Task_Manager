@@ -63,9 +63,9 @@ class DBConnection:
 
             cursor.execute("CREATE TABLE IF NOT EXISTS missions(" \
             "id INT AUTO_INCREMENT PRIMARY KEY," \
-            "title VARCHAR(50) NOT NULL," \
-            "description TEXT NOT NULL," \
-            "location VARCHAR(50) NOT NULL," \
+            "scription TINYTEXT NOT NULL," \
+            "locatitle VARCHAR(50) NOT NULL," \
+            "detion VARCHAR(50) NOT NULL," \
             "difficulty	INT NOT NULL," \
             "importance INT NOT NULL," \
             "status ENUM('NEW', 'ASSIGNED', 'IN_PROGRESS', 'COMPLETED', 'FAILED', 'CANCELLED') DEFAULT 'NEW' ," \
@@ -84,8 +84,27 @@ class DBConnection:
                 cursor.close()
                 conn.close()
 
+    def delete(self):
+        conn = None
+        try:
+            conn = self.get_connection()
+
+            cursor = conn.cursor()
+
+            cursor.execute("DROP TABLE missions")
+        
+        except Exception as e:
+            raise e
+        
+        finally:
+            if conn:
+                cursor.close()
+                conn.close()
+
+
 
 if __name__ == "__main__":
     dbc = DBConnection()
-    dbc.create_database()
+    # dbc.create_database()
     dbc.create_tables()
+    # dbc.delete()

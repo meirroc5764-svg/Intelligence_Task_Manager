@@ -13,6 +13,14 @@ class CNewAgent(BaseModel):
     specialty:str 
     agent_rank:Literal['Junior','Senior','Commandor']
 
+class UpAgent(BaseModel):
+    name:str|None = None 
+    specialty:str|None = None  
+    is_active:bool|None = None
+    completed__missions:int|None = None
+    failed_missions:int|None = None
+    agent_ran:int|None = None
+
 
 @router.post("/agents",status_code=201)
 def create_agent(data:CNewAgent):
@@ -34,10 +42,9 @@ def show_all():
     except:
         raise HTTPException(status_code=500,detail="false")
     
+
 @router.get("/agents/{id}")
 def find_by_id(id:int):
-    if not int(id):
-        raise HTTPException(status_code=422,detail="eror value")
     try:
         my_agent = adb.get_agent_by_id(id)
         if not my_agent:
@@ -45,3 +52,25 @@ def find_by_id(id:int):
         return {"the agent":my_agent}
     except:
         raise HTTPException(status_code=500,detail="false")
+    
+
+
+@router.put("/agents/{id}",status_code=200)
+def update_agent(id:int,data:UpAgent):
+    try:
+        my_agent = adb.update_agent(id,data)
+        return {"message":my_agent}
+    except:
+        raise HTTPException(status_code=500,detail="false")
+
+@router.put("/agents/{id}/deactivate",status_code=200)
+def deactive_agents(id):
+    try:
+        my_agent = adb.deactivate_agent(id)
+        return {"message":my_agent}
+    except:
+        raise HTTPException(status_code=500,detail="deactive false")
+    
+@router.get("/agents/{id}/performance")
+def agents_performance():
+    pass
