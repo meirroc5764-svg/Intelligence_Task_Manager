@@ -1,4 +1,4 @@
-from db_connection import DBConnection
+from database.db_connection import DBConnection
 
 
 
@@ -155,7 +155,7 @@ class AgentDB:
 
             cursor = conn.cursor()
 
-            cursor.execute("SELECT completed_missions FROM agents WHERE id = %s",(id,))
+            cursor.execute("SELECT failed_missions FROM agents WHERE id = %s",(id,))
 
             my_num = cursor.fetchone()[0]
 
@@ -176,23 +176,26 @@ class AgentDB:
                 conn.close()
 
 
-    def get_agent_performance(self):
+    def get_agent_performance(self,id):
         conn = None
         try:
             conn = dbc.get_connection()
 
             cursor = conn.cursor()
 
-            cursor.execute("SELECT SUM(completed_missions) FROM agents ")
+            cursor.execute("SELECT completed_missions FROM agents WHERE id = %s",(id,))
 
             num_completed_missions = cursor.fetchone()[0]
 
-            cursor.execute("SELECT SUM(failed_missions)  FROM agents ")
+            cursor.execute("SELECT failed_missions  FROM agents WHERE id = %s",(id,))
 
             num_failed_missions = cursor.fetchone()[0]
 
             total = num_completed_missions + num_failed_missions
-
+            
+            if total == 0:
+                return {"completed":0, "failed":0, "total":0, "success_rate":0 } 
+            
             success_rate = round((num_completed_missions/total) * 100,2)
 
             return {"completed":num_completed_missions, "failed":num_failed_missions, "total":total, "success_rate":success_rate }
@@ -235,10 +238,10 @@ if __name__=="__main__":
              "specialty":"program",
              "agent_rank":"junior"}
     # print(adb.create_agent(agent))
-    print(adb.get_all_agents())
-    # print(adb.get_agent_by_id(2))
+    # print(adb.get_all_agents())
+    print(adb.get_agent_by_id(222))
     # print(adb.update_agent(1,agent))
     # print(adb.increment_completed(1))
-    print(adb.get_agent_performance())
-    print(adb.count_active_agents())
+    # print(adb.get_agent_performance())
+    # print(adb.count_active_agents())
 

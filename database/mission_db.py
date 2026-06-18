@@ -1,4 +1,4 @@
-from db_connection import DBConnection
+from database.db_connection import DBConnection
 from agent_db import AgentDB
 dbc = DBConnection()
 adb = AgentDB()
@@ -78,6 +78,7 @@ class MissionDB:
                 cursor.close()
                 conn.close()
 
+    
     def get_mission_by_id(self,id):
         conn = None
         try:
@@ -103,10 +104,7 @@ class MissionDB:
                 conn.close()
 
     def assign_mission(self,m_id, a_id):
-        if not adb.get_agent_by_id(a_id):
-            return "not fount a agent with this id"
-        if not self.get_mission_by_id(m_id):
-            return "not found a mission with this id"
+
         
         conn = None
         try:
@@ -118,7 +116,7 @@ class MissionDB:
 
             conn.commit()
 
-            self.update_mission_status(m_id,"ASSIGNED")
+            cursor.execute("UPDATE missions SET status = %s WHERE id = %s",(m_id,))
 
             return "a mission assign"
         
@@ -252,7 +250,7 @@ class MissionDB:
 
             cursor = conn.cursor()
 
-            cursor.execute("SELECT COUNT(*) FROM missions WHERE status = %s",("CRITICAL",))
+            cursor.execute("SELECT COUNT(*) FROM missions WHERE risk_level = %s",("CRITICAL",))
 
             all_data = cursor.fetchone()[0]
 
@@ -312,8 +310,8 @@ if __name__=="__main__":
     print(mdb.get_all_missions())
     # print(mdb.get_mission_by_id(2))
     # print(mdb.assign_mission(1,5))
-    pr
-    print(mdb.get_open_missions_by_agent(5))
+    # print(mdb.update_mission_status(2,"ASSIGNED"))
+    # print(mdb.get_open_missions_by_agent(5))
     # print(mdb.count_all_missions())
     # print(mdb.count_by_status("new"))
     # print(mdb.count_open_missions())
