@@ -50,7 +50,7 @@ def assign_mission(mission_id:int, agent_id:int):
             
     if not adb.get_agent_by_id(agent_id):
             raise HTTPException(status_code=404,detail="not fount a agent with this id")
-        
+     
     if not mdb.get_mission_by_id(mission_id):
             raise HTTPException(status_code=404,detail="not found a mission with this id")
     

@@ -203,6 +203,37 @@ Only a task with the status IN_PROGRESS can be finished and changed to failed or
 Only a task with the status NEW or ASSIGNED can be canceled — otherwise an error. 
 
 -----------------------------------
+## the ruoter
+
+### agent router
+[ POST] | /agents| יצירת סוכן חדש \
+[ GET]| /agents |כל הסוכנים \
+[GET] /agents/{id}| ID לפי סוכן \
+[PUT] /agents/{id} |סוכן עדכון \
+[PUT] /agents/{id}/deactivate |סוכן השבתת \
+[GET] /agents/{id}/performance | סוכן ביצועי \
+
+### missions router 
+[POST] | /issions | יצירת משימה \
+[ GET]|/missions | כל המשימות \
+[GET] |/missions/{id}| ID לפי משימה \
+[PUT]| /missions/{id}/assign/{agent_id}|לסוכן שיו \
+[PUT] | /missions/{id}/start | משימה התחלת \
+[PUT] |/missions/{id}/complete |בהצלחה סיום \
+[PUT] |/missions/{id}/fail |בכישלון סיום \
+[PUT] |/missions/{id}/cancel |משימה  \
+
+### reports router
+
+דוח כללי של המערכת summary/reports/[ GET] \
+[GET] | /reports/missions-by-status| סטטוס לפי  \משימות
+[GET]| /reports/top-agent | (get_top_agent) המצטיין הסוכ 
+
+
+
+
+
+--------------------------------------------
 ## Running instructions
 
 open cmd and enter:

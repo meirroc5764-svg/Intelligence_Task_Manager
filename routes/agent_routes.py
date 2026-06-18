@@ -57,6 +57,8 @@ def find_by_id(id:int):
 
 @router.put("/agents/{id}",status_code=200)
 def update_agent(id:int,data:UpAgent):
+    if not adb.get_agent_by_id(id):
+        raise HTTPException(status_code=404,detail="not found")
     try:
         my_agent = adb.update_agent(id,data.model_dump(exclude_none=True))
         return {"message":my_agent}
@@ -66,6 +68,8 @@ def update_agent(id:int,data:UpAgent):
 
 @router.put("/agents/{id}/deactivate",status_code=200)
 def deactive_agents(id:int):
+    if not adb.get_agent_by_id(id):
+        raise HTTPException(status_code=404,detail="not found")
     try:
         my_agent = adb.deactivate_agent(id)
         return {"message":my_agent}
@@ -75,6 +79,8 @@ def deactive_agents(id:int):
 
 @router.get("/agents/{id}/performance")
 def agents_performance(id:int):
+    if not adb.get_agent_by_id(id):
+        raise HTTPException(status_code=404,detail="not found")
     try:
         return adb.get_agent_performance(id)
     except Exception as e:
