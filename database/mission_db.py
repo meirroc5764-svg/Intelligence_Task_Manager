@@ -1,5 +1,5 @@
 from database.db_connection import DBConnection
-from agent_db import AgentDB
+from database.agent_db import AgentDB
 dbc = DBConnection()
 adb = AgentDB()
 
@@ -291,7 +291,26 @@ class MissionDB:
                 conn.close()
 
 
+    def count_all_by_status(self,):
+        conn = None
+        try:
+            conn = dbc.get_connection()
 
+            cursor = conn.cursor()
+
+            cursor.execute("SELECT status,COUNT(*)  FROM missions GROUP BY STATUS")
+
+            all_data = cursor.fetchall()
+
+            return all_data
+        
+        except Exception as e:
+            raise e
+
+        finally:
+            if conn:
+                cursor.close()
+                conn.close()
 
 
 
@@ -317,3 +336,4 @@ if __name__=="__main__":
     # print(mdb.count_open_missions())
     # print(mdb.count_critical_missions())
     # print(mdb.get_top_agent())
+    print(mdb.count_all_by_status())

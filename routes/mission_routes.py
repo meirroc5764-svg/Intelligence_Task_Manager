@@ -56,6 +56,7 @@ def assign_mission(mission_id:int, agent_id:int):
     
     return mdb.assign_mission(mission_id, agent_id)
 
+
 @router.put("/missions/{id}/start",status_code=200)
 def start_status(id,status:Literal["ASSIGNED","IN_PROGRESS"]):
     
@@ -66,6 +67,7 @@ def start_status(id,status:Literal["ASSIGNED","IN_PROGRESS"]):
     except Exception as e:
         raise HTTPException(status_code=500,detail=str(e))
     
+
 @router.put("/missions/{id}/complete",status_code=200)
 def mission_complite(id):
     if not mdb.get_mission_by_id(id):
@@ -76,6 +78,8 @@ def mission_complite(id):
     except Exception as e:
         raise HTTPException(status_code=500,detail=str(e))
     
+
+
 @router.put("/missions/{id}/failed")
 def mission_failed(id):
     if not mdb.get_mission_by_id(id):
