@@ -7,6 +7,10 @@ intelligence-task-manager/
 │   ├── db_connection.py
 │   ├── agent_db.py
 │   └── mission_db.py
+├──routes/
+│ ├── agent_routes.py
+│ ├── mission_routes.py
+│ └── report_routes.py
 ├── README.md
 ├── requirements.txt
 └── .gitignore
@@ -210,4 +214,6 @@ after open git
 https://github.com/meirroc5764-svg/Intelligence_Task_Manager
 
 and take a kod \
-open a vs kod and run a main 
+open a vs kod 
+pip install requirements.txt
+and run a main 

@@ -1,7 +1,7 @@
 from pydantic import BaseModel
-from typing import Literal
 
-from db_connection import DBConnection
+
+from database.db_connection import DBConnection
 
 
 
@@ -22,7 +22,13 @@ class AgentDB:
 
             conn.commit()
 
-            return "create a agent"
+            new_agent_id = cursor.lastrowid
+
+            cursor.execute("SELECT * FROM agents WHERE id = %s",(new_agent_id,))
+
+            new_agent = cursor.fetchone()
+            
+            return new_agent
         
         except Exception as e:
             raise e
@@ -64,6 +70,8 @@ class AgentDB:
             cursor.execute("SELECT * FROM agents WHERE id = %s",(id,))
 
             my_agent = cursor.fetchone()
+            if not my_agent:
+                return None
 
             return my_agent
         
@@ -75,6 +83,7 @@ class AgentDB:
                 cursor.close()
                 conn.close()
 
+    
     def update_agent(self,id,data):
         conn = None
         try:
@@ -101,7 +110,7 @@ if __name__=="__main__":
     agent = {"name":"meir",
              "specialty":"program",
              "agent_rank":"junior"}
-    # print(adb.create_agent(agent))
+    print(adb.create_agent(agent))
     print(adb.get_all_agents())
     # print(adb.get_agent_by_id(2))
     print(adb.update_agent(1,agent))
