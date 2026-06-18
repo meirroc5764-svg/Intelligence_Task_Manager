@@ -40,7 +40,7 @@ class AgentDB:
         try:
             conn = dbc.get_connection()
 
-            cursor = conn.cursor()
+            cursor = conn.cursor(dictionary=True)
 
             cursor.execute("SELECT * FROM agents")
 
